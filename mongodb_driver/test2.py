@@ -37,4 +37,5 @@ if __name__ == "__main__":
             "timestamp": f"2024-05-15 08:00:00",
             "moisture": 50.45,
         }
-    print(db.exist_record(device_type=mongodb_driver_dev_type.MOISTURE_SENSOR, record=data))
+    for record in db.exist_record(device_type=mongodb_driver_dev_type.MOISTURE_SENSOR, record=data)
+        print(record)

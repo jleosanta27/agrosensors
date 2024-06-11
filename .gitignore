@@ -1,2 +1,6 @@
 
+venv/
+
+mongodb_driver/__pycache__/
+
 .vscode/
