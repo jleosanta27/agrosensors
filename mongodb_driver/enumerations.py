@@ -10,6 +10,7 @@ class data_enum(str, Enum):
 
     # NODE
     SOC             = "soc",
+    CPU_TEMP        = "cpu_temp"
 
     # SENSOR
     MOISTURE        = "moisture",
@@ -37,7 +38,8 @@ class recordsxdev_enum(str, Enum):
 class node_enum(str, Enum):
     ID_RECORD       = data_enum.ID_RECORD,
     ID_DEVICE       = data_enum.ID_DEVICE,
-    SOC             = data_enum.SOC
+    SOC             = data_enum.SOC,
+    CPU_TEMP        = data_enum.CPU_TEMP
 
     def __str__(self) -> str:
         return self.value

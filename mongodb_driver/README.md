@@ -1,5 +1,32 @@
 # agrosensors
 
+# Collections
+The structure defined for the BD consists in 4 collections: records, recordsxdev, sensors, nodes.
+
+## records collection
+- _id: id record
+- ts: timestamp
+
+## recordsxdev collection
+- _id: id record
+- id_dev: id device
+- type_dev: device type (sensor or node)
+- sent: indicates if the register was sent
+
+## sensors
+- _id: id record
+- id_dev: id device
+- moisture: percentage of moisture sensed
+- temp: temperature in celsius
+
+## nodes
+- _id: id record
+- id_dev: id device
+- soc: state of charge for the battery node
+- cpu_temp: temperature of the cpu device
+
+# Installation
+
 ## Install Docker
 - sudo curl -sSL https://get.docker.com | sh
 - sudo usermod -aG Docker [user]
