@@ -30,21 +30,24 @@ if __name__ == "__main__":
     db = mongodb_driver(host=HOST, port=PORT, db_name=DB_NAME, timeout=5000, logger=logger)
 
     # create id_record
-    id = db.create_id_record()
-    print(f"ID_RECORD created: {id}")
-    time.sleep(2)
+    #id = db.create_id_record()
+    #print(f"ID_RECORD created: {id}")
+    #time.sleep(2)
 
     # insert record with the id_record created previously
-    data={data_enum.ID_RECORD: id,
-          data_enum.ID_DEVICE: 24343434,
-          data_enum.MOISTURE: 55.4,
-          data_enum.TEMP: 23.2,
-          data_enum.DEVICE_TYPE: device_type_enum.SENSOR}
-    
-    data={data_enum.ID_RECORD: id,
-          data_enum.ID_DEVICE: 249934,
-          data_enum.SOC: 98,
-          data_enum.DEVICE_TYPE: device_type_enum.NODE,}
+    #data={data_enum.ID_RECORD: id,
+    #      data_enum.ID_DEVICE: 24343434,
+    #      data_enum.MOISTURE: 55.4,
+    #      data_enum.TEMP: 23.2,
+    #      data_enum.DEVICE_TYPE: device_type_enum.SENSOR}
+    #
+    #data={data_enum.ID_RECORD: id,
+    #      data_enum.ID_DEVICE: 249934,
+    #      data_enum.SOC: 98,
+    #      data_enum.DEVICE_TYPE: device_type_enum.NODE,}
+    #
+    #db.insert_record(record=data)
 
-    
-    db.insert_record(record=data)
+    # check if a record exist
+    val = db.exist_record(id_device=24343434, date="2024-06-10 19:23:59")
+    print(val)

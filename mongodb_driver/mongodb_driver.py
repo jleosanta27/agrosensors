@@ -19,6 +19,7 @@ from enumerations import sensors_enum
 from enumerations import collections_enum
 from enumerations import device_type_enum
 from enumerations import node_enum
+from enumerations import data_enum
 
 # Constants
 BD_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
@@ -45,7 +46,6 @@ class mongodb_driver:
         except Exception as e:
             self.logger.error(f"Error establishing connection: {e}")
 
-    
     def create_id_record(self) -> str:
         val_return: str = str()
         
@@ -92,16 +92,59 @@ class mongodb_driver:
 
         return val_return
 
-
-
-
-
-
-    def exist_record(self, collection_type: collections_enum, record: dict) -> bool:
-        collection = self.__db[collection_type]
-        query = {'timestamp': record['timestamp'], 'id_device': record['id_device']}
+    def exist_record(self, id_device: int, date: Union[str, datetime]) -> str:
+        val_return = str()
         
-        return collection.find_one(query) is not None 
+        date_str = str()
+        if type(date) == datetime:
+            date_str = date.strftime(BD_DATE_FORMAT)
+        else:
+            date_str = date
+
+        collection = self.db[collections_enum.RECORDS]
+        pipeline = ([
+            {
+                '$match': 
+                {
+                    #'id_dev': id_device  # Replace with your specific condition
+                    'ts': date_str   # Replace with your specific condition
+                 }
+            },
+            {
+                '$lookup': 
+                {
+                    'from': collections_enum.RECORDSXDEV, 
+                    'localField': records_enum.ID_RECORD, 
+                    'foreignField': recordsxdev_enum.ID_RECORD, 
+                    'as': 'joinedResult'
+                }
+            },
+            {
+                '$unwind': '$joinedResult'  # Deconstructs the array field from the input documents to output a document for each element
+            },
+            {
+                '$match':
+                {
+                    'joinedResult.id_dev': id_device
+                }
+            },
+            {
+                '$project': 
+                {
+                    '_id': 1
+                }
+            }       
+        ])
+        data = list(collection.aggregate(pipeline))
+
+        if data:
+            val_return = data[0][data_enum.ID_RECORD]
+        
+        return val_return
+
+
+
+
 
     def set_record_as_sent(self, device_type: collections_enum, id_device: int, timestamp: str) -> bool:
         val_return: bool = False
